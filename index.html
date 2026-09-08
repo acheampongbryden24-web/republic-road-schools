@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Republic Road Schools - JHS | Quality Education in Tema</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+    <style>
+        :root {
+            --primary-blue: #0c45ee;
+            --accent-orange: #e28c0be8;
+            --secondary-yellow: #ffcc00;
+            --bg-light: #f4f6f9;
+            --text-dark: #1a1a1a;
+            --white: #ffffff;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* ==================== HEADER & NAVIGATION ==================== */
+        header {
+            background: linear-gradient(135deg, var(--white) 0%, #f8f9ff 100%);
+            color: var(--primary-blue);
+            padding: 0.8rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 4px solid var(--primary-blue);
+            box-shadow: var(--shadow-md);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .brand-crest {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.8rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .logo h1 {
+            font-size: 1.3rem;
+            color: var(--primary-blue);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .logo span {
+            font-size: 0.8rem;
+            color: var(--accent-orange);
+            font-weight: 700;
+            display: block;
+            letter-spacing: 0.3px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        nav a:hover, nav a.active {
+            background-color: var(--accent-orange);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--white);
+                padding: 1rem;
+                box-shadow: var(--shadow-lg);
+            }
+
+            nav.active {
+                display: block;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+
+        /* ==================== PAGE SECTIONS ==================== */
+        .page-section {
+            display: none;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2.5rem 2rem;
+            flex: 1;
+            width: 100%;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ==================== HERO BANNER ==================== */
+        .hero-banner {
+            width: 100%;
+            min-height: 350px;
+            background: url(OIP\ \(1\).jpg);
+            background-size: auto;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--white);
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.5;
+        }
+
+        .hero-content {
+            position: relative;
+            text-align: center;
+            z-index: 2;
+        }
+
+        .hero-banner h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: 1px;
+        }
+
+        .hero-banner .subtitle {
+            font-size: 1.3rem;
+            color: var(--secondary-yellow);
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .hero-banner .tagline {
+            font-size: 0.95rem;
+            margin-top: 1rem;
+            color: rgba(1, 46, 245, 0.9);
+            font-style: italic;
+        }
+
+        /* ==================== CARDS ==================== */
+        .card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 1.5rem;
+            border-left: 5px solid var(--primary-blue);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+        }
+
+        .card.accent {
+            border-left-color: var(--accent-orange);
+        }
+
+        .card.featured {
+            background: linear-gradient(135deg, rgba(0,51,204,0.02) 0%, rgba(255,85,0,0.02) 100%);
+            border: 2px solid var(--primary-blue);
+            border-left: 5px solid var(--accent-orange);
+        }
+
+        h2 {
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            border-bottom: 3px solid var(--accent-orange);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+            font-size: 1.4rem;
+            position: relative;
+        }
+
+        h3 {
+            color: var(--primary-blue);
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card ul, .card ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card li {
+            margin-bottom: 0.6rem;
+            color: var(--text-dark);
+        }
+
+        /* ==================== GRIDS ==================== */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        /* ==================== STAT BOXES ==================== */
+        .stat-box {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #001a66 100%);
+            color: var(--white);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--secondary-yellow);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        /* ==================== FACULTY CARDS ==================== */
+        .faculty-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            border-top: 4px solid var(--accent-orange);
+        }
+
+        .faculty-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-6px);
+        }
+
+        .faculty-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-orange) 100%);
+            margin: 0 auto 1rem;
+            border: 4px solid var(--primary-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--white);
+        }
+
+        .faculty-card h3 {
+            color: var(--primary-blue);
+            margin-top: 0;
+        }
+
+        .faculty-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* ==================== GALLERY ==================== */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .gallery-card {
+            position: relative;
+            height: 250px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .gallery-card:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .gallery-card-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: var(--white);
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .gallery-card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ==================== FORMS ==================== */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-group input, 
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.85rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, 
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(0,51,204,0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* ==================== BUTTONS ==================== */
+        .btn {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #001a66 100%);
+            color: var(--white);
+            padding: 0.9rem 2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, var(--accent-orange) 0%, #ff3300 100%);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(135deg, var(--accent-orange) 0%, #ff3300 100%);
+            color: var(--white);
+        }
+
+        .btn.secondary:hover {
+            background: linear-gradient(135deg, var(--secondary-yellow) 0%, #ffaa00 100%);
+            color: var(--primary-blue);
+        }
+
+        /* ==================== SUCCESS MESSAGE ==================== */
+        .success-message {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ==================== MAP ==================== */
+        #map {
+            width: 100%;
+            height: 400px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ==================== TABS ==================== */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #999;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            color: var(--primary-blue);
+            border-bottom-color: var(--accent-orange);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ==================== TIMELINE ==================== */
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline-item {
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+            border-left: 3px solid var(--primary-blue);
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -9px;
+            top: 0;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--accent-orange);
+            border: 3px solid var(--white);
+        }
+
+        .timeline-item h4 {
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+/* ==================== THANK YOU PAGE ==================== */ 
+.thank-you-section { 
+    display: none; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0; 
+    background: rgba(0, 0, 0, 0.5); 
+    z-index: 2000; 
+    align-items: center; 
+    justify-content: center; 
+    animation: fadeIn 0.3s ease; 
+} 
+
+.thank-you-section.active { 
+    display: flex; 
+} 
+
+.thank-you-box { 
+    background: var(--white); 
+    padding: 3rem 2rem; 
+    border-radius: 15px; 
+    text-align: center; 
+    max-width: 500px; 
+    width: 90%;
+    box-shadow: var(--shadow-lg); 
+    animation: slideUp 0.4s ease; 
+} 
+
+@keyframes slideUp { 
+    from { 
+        opacity: 0; 
+        transform: translateY(30px); 
+    } 
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    } 
+} 
+
+.thank-you-icon { 
+    font-size: 5rem; 
+    color: #28a745; 
+    margin-bottom: 1rem; 
+    animation: popIn 0.5s ease; 
+} 
+
+@keyframes popIn { 
+    0% { 
+        transform: scale(0); 
+    } 
+    50% { 
+        transform: scale(1.1); 
+    } 
+    100% { 
+        transform: scale(1); 
+    } 
+} 
+
+.thank-you-box h2 { 
+    color: #28a745; 
+    border-bottom: 3px solid #28a745; 
+    margin-bottom: 1rem; 
+    font-size: 1.8rem; 
+} 
+
+.thank-you-box p { 
+    color: #666; 
+    line-height: 1.8; 
+    margin: 1rem 0; 
+    font-size: 1rem; 
+} 
+
+.thank-you-box .btn { 
+    margin-top: 2rem; 
+}
+        /* ==================== FOOTER ==================== */
+        footer {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #001a66 100%);
+            color: var(--white);
+            padding: 3rem 2rem 1rem;
+            margin-top: auto;
+            border-top: 5px solid var(--accent-orange);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .footer-section h3 {
+            color: var(--secondary-yellow);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.7rem;
+        }
+
+        .footer-section a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--secondary-yellow);
+            padding-left: 0.5rem;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-icons a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background: var(--accent-orange);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            .hero-banner h1 {
+                font-size: 2rem;
+            }
+
+            .page-section {
+                padding: 1.5rem 1rem;
+            }
+
+            .grid-2, .grid-3, .grid-4 {
+                gap: 1rem;
+            }
+
+            .tabs {
+                gap: 0.5rem;
+            }
+
+            .tab-btn {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== HEADER ==================== -->
+    <header>
+        <div class="header-container">
+            <div class="brand">
+                <div class="brand-crest">
+                    <img src="OIP (1).jpg" style="width: 100cm; height: 100%; object-fit: contain;"> 
+                </div>
+                <div class="logo">
+                    <h1>Republic Road Schools</h1>
+                    <span>Junior High School • Comm. 4 Tema</span>
+                </div>
+            </div>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav id="mainNav">
+                <ul>
+                    <li><a class="nav-link active" onclick="showPage('home')">Home</a></li>
+                    <li><a class="nav-link" onclick="showPage('about')">About Us</a></li>
+                    <li><a class="nav-link" onclick="showPage('academics')">Academics</a></li>
+                    <li><a class="nav-link" onclick="showPage('admission')">Admission</a></li>
+                    <li><a class="nav-link" onclick="showPage('gallery')">Gallery</a></li>
+                    <li><a class="nav-link" onclick="showPage('news')">News</a></li>
+                    <li><a class="nav-link" onclick="showPage('contact')">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ==================== HOME PAGE ==================== -->
+    <section id="home" class="page-section active">
+        <div class="hero-banner">
+            <div class="hero-content">
+                <h1>Republic Road Schools</h1>
+                <p class="subtitle">Excellence in Junior High Education</p>
+                <p class="tagline">📚 Aim High • Build Character • Shape Leaders 🚀</p>
+            </div>
+        </div>
+
+        <div class="grid-4">
+            <div class="stat-box">
+                <div class="stat-number">150+</div>
+                <div class="stat-label">Students Enrolled</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">20+</div>
+                <div class="stat-label">Qualified Teachers</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">60+</div>
+                <div class="stat-label">Years Excellence</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">80%</div>
+                <div class="stat-label">BECE Pass Rate</div>
+            </div>
+        </div>
+
+        <div class="card featured">
+            <h2>Welcome to Excellence</h2>
+            <p>Welcome to Republic Road Schools (Junior High School Department), located in Community 4, Tema. Under our motto <strong>"AIM HIGH,"</strong> we are dedicated to providing quality basic education that builds character, academic strength, and practical skills. Our institution serves as a beacon of educational excellence in the Tema metropolis, committed to nurturing the next generation of leaders, innovators, and responsible citizens.</p>
+            <p style="margin-top: 1rem;">With a legacy of academic excellence and holistic development, we combine rigorous academics with character education, technology integration, and extracurricular opportunities that prepare students for success at the senior high school level and beyond.</p>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <h2><i class="fas fa-trophy" style="color: var(--accent-orange); margin-right: 0.5rem;"></i>Our Achievements</h2>
+                <ul>
+                    <li>✓ Consistent High Academic Standards in National Examinations</li>
+                    <li>✓ Active Participation in Regional Athletic & Academic Competitions</li>
+                    <li>✓ Proven Excellence in STEM, Robotics, and Practical Sciences</li>
+                    <li>✓ Strong Community Service & Social Responsibility Programs</li>
+                </ul>
+            </div>
+            <div class="card accent">
+                <h2><i class="fas fa-star" style="color: var(--secondary-yellow); margin-right: 0.5rem;"></i>Why Choose Us?</h2>
+                <ul>
+                    <li>✓ Modern Facilities & Technology Integration</li>
+                    <li>✓ Qualified & Dedicated Teaching Staff</li>
+                    <li>✓ Comprehensive Student Support Services</li>
+                    <li>✓ Safe & Conducive Learning Environment</li>
+                    <li>✓ Strong Parent-School Partnership</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ABOUT PAGE ==================== -->
+    <section id="about" class="page-section">
+        <div class="hero-banner">
+            <div class="hero-content">
+                <h1>About Our Institution</h1>
+                <p class="subtitle">Building Future Leaders</p>
+                <p class="tagline">Education That Transforms Lives</p>
+            </div>
+        </div>
+
+        <div class="card featured">
+            <h2><i class="fas fa-info-circle" style="color: var(--accent-orange); margin-right: 0.5rem;"></i>Our Story</h2>
+            <p>Republic Road Schools has been a cornerstone of quality education in Community 4, Tema for over 15 years. Established with a vision to provide accessible, high-quality junior high school education, our institution has grown into one of the most respected educational centers in the Greater Accra Region. We pride ourselves on our commitment to academic excellence, character development, and the holistic growth of our students.</p>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <h2><i class="fas fa-bullseye" style="color: var(--primary-blue); margin-right: 0.5rem;"></i>Our Mission, Vision & Motto</h2>
+                <p><strong style="color: var(--accent-orange); font-size: 1.1rem;">Motto:</strong> <span style="font-size: 1.15rem;"><strong>AIM HIGH</strong></span></p>
+                <p style="margin-top: 1rem; margin-bottom: 1rem; padding: 1rem; background: #f0f5ff; border-left: 3px solid var(--accent-orange); border-radius: 4px;"><strong>Mission:</strong> To provide accessible, high-quality Junior High School education through disciplined instruction, modern pedagogy, and holistic training that prepares students for success in their academic and personal endeavors.</p>
+                <p style="padding: 1rem; background: #fff8f0; border-left: 3px solid var(--accent-orange); border-radius: 4px;"><strong>Vision:</strong> To be the leading junior high school in the Tema metropolis, raising knowledgeable, innovative, ethical, and upright leaders for Ghana and the global community.</p>
+            </div>
+            <div class="card">
+                <h2><i class="fas fa-compass" style="color: var(--primary-blue); margin-right: 0.5rem;"></i>Core Values & Philosophy</h2>
+                <p><strong style="color: var(--accent-orange);">Our Core Values:</strong></p>
+                <ul style="margin-bottom: 1.5rem;">
+                    <li><strong>Hard Work:</strong> Dedication and perseverance in all endeavors</li>
+                    <li><strong>Integrity:</strong> Honesty and ethical conduct in all dealings</li>
+                    <li><strong>Perseverance:</strong> Never giving up despite challenges</li>
+                    <li><strong>Respect:</strong> Valuing diversity and treating all with dignity</li>
+                </ul>
+                <p><strong style="color: var(--accent-orange);">Our Philosophy:</strong> Guided by our crest's flaming torch symbolizing enlightenment, we believe in illuminating young minds through rigorous academics, technological innovation, character development, and preparation for responsible citizenship in a rapidly changing world.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-people-group" style="color: var(--accent-orange); margin-right: 0.5rem;"></i>Our Leadership Team</h2>
+            <div class="grid-3" style="margin-top: 1.5rem;">
+                <div class="faculty-card">
+                    <div class="faculty-avatar"><i class="fas fa-user-tie"></i></div>
+                    <h3>Mr. Kwame Asante</h3>
+                    <p>Headmistress</p>
+                    <p style="font-size: 0.8rem; color: #999; margin-top: 0.5rem;">22 Years Educational Leadership</p>
+                </div>
+                <div class="faculty-card">
+                    <div class="faculty-avatar"><i class="fas fa-user"></i></div>
+                    <h3>Mrs. Ama Owusu</h3>
+                    <p>Deputy Headmaster</p>
+                    <p style="font-size: 0.8rem; color: #999; margin-top: 0.5rem;">18 Years Teaching Experience</p>
+                </div>
+                <div class="faculty-card">
+                    <div class="faculty-avatar"><i class="fas fa-user-circle"></i></div>
+                    <h3>Mr. Martin Kofi Tawiah</h3>
+                    <p>HOD Mathematics Dept.</p>
+                    <p style="font-size: 0.8rem; color: #999; margin-top: 0.5rem;">15 Years Student Development</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ACADEMICS PAGE ==================== -->
+    <section id="academics" class="page-section">
+        <div class="hero-banner">
+            <div class="hero-content">
+                <h1>Academic Excellence</h1>
+                <p class="subtitle">Quality Education, Proven Results</p>
+                <p class="tagline">GES-Aligned Curriculum • BECE Focused • Future-Ready</p>
+            </div>
+        </div>
+
+        <div class="card featured">
+            <h2><i class="fas fa-book" style="color: var(--accent-orange); margin-right: 0.5rem;"></i>Academic Overview</h2>
+            <p>Our Junior High School curriculum strictly conforms to official Ghana Education Service (GES) standards, ensuring students receive standardized quality education. Our comprehensive program focuses on rigorous preparation for the BECE (Basic Education Certificate Examination) while nurturing critical thinking, creativity, and practical skills through our balanced approach to academics and character education.</p>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <h2><i class="fas fa-graduation-cap" style="color: var(--primary-blue); margin-right: 0.5rem;"></i>Curriculum Structure</h2>
+                <h4 style="margin-top: 1.5rem; color: var(--accent-orange);">Core Subjects:</h4>
+                <ul>
+                    <li>Mathematics</li>
+                    <li>English Language </li>
+                    <li>Integrated Science </li>
+                    <li>Social Studies y</li>
+                    
+                </ul>
+                <h4 style="margin-top: 1.5rem; color: var(--accent-orange);">Elective Subjects:</h4>
+                <ul>
+                    <li>Religious & Moral Education (RME)</li>
+                    <li>Computing </li>
+                    <li>Career Technology (Technical Drawing)</li>
+                    <li>Creative Arts & Music</li>
+                    <li>Physical Education & Sports</li>
+                    <li>French</li>
+                    <li>Asante Twi</li>
+                </ul>
+            </div>
+            <div class="card accent">
+                <h2><i class="fas fa-flask" style="color: var(--accent-orange); margin-right: 0.5rem;"></i>Clubs & Programs</h2>
+                <h4 style="margin-top: 1.5rem; color: var(--primary-blue);">Academic Clubs:</h4>
+                <ul>
+                    <li>Robotics & AI Club</li>
+                    <li>Science & Innovation Club</li>
+                    <li>Debating Club</li>
+                    <li>JSMQ Club</li>
+                </ul>
+                <h4 style="margin-top: 1.5rem; color: var(--primary-blue);">Co-curricular Activities:</h4>
+                <ul>
+                    <li>Youth Leadership Program</li>
+                    <li>Environmental Club & Green Initiative</li>
+                    <li>Arts & Cultural Societies</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-chalkboard-user" style="color: var(--accent-orange); margin-right: 0.5rem;"></i>Meet Our Faculty</h2>
+            <p style="margin-bottom: 1.5rem; color: #666;">Our dedicated team of experienced educators is committed to student success and holistic development.</p>
+            <div class="grid-3">
+                <div class="faculty-card">
+                    <img src="kwasi 2.jpg" style="width: 100px;height: 100px;border-radius: 50%;border: 4px solid var(--primary-blue);object-fit: cover;">
+                    <h3>Mrs Selina</h3>
+                    <p>HOD science Department</p>
+                    <p style="font-size: 0.85rem; color: #999; margin-top: 0.5rem;">MSc. Physics, 12 Years Experience</p>
+                </div>
+                <div class="faculty-card">
+                    <div class="faculty-avatar"><i class="fas fa-plus"></i></div>
+                    <h3>Mr. Martin Kofi Tawiah</h3>
+                    <p>HOD Mathematics Department</p>
+                    <p style="font-size: 0.85rem; color: #999; margin-top: 0.5rem;">BA Mathematics, 10 Years Experience</p>
+                </div>
+                <div class="faculty-card">
+                    <div class="faculty-avatar"><i class="fas fa-book-reader"></i></div>
+                    <h3>Mrs. Patricia Asibey</h3>
+                    <p>HOD English Department</p>
+                    <p style="font-size: 0.85rem; color: #999; margin-top: 0.5rem;">MA Literature, 11 Years Experience</p>
+                </div>
+                <div class="faculty-card">
+                    <div class="faculty-avatar"><i class="fas fa-globe"></i></div>
+                    <h3>Mr. David Osei</h3>
+                    <p> HOD Social Science Department</p>
+                    <p style="font-size: 0.85rem; color: #999; margin-top: 0.5rem;">BA History, 9 Years Experience</p>
+                </div>
+                <div class="faculty-card">
+                    <div class="faculty-avatar"><i class="fas fa-laptop"></i></div>
+                    <h3>Mrs. Gladys Bebe</h3>
+                    <p>HOD ICT & Computing Department</p>
+                    <p style="font-size: 0.85rem; color: #999; margin-top: 0.5rem;">Diploma ICT, 8 Years Experience</p>
+                </div>
+                <div class="faculty-card">
+                    <div class="faculty-avatar"><i class="fas fa-palette"></i></div>
+                    <h3>Mr. Samuel Amoah</h3>
+                    <p>HOD Arts Department</p>
+                    <p style="font-size: 0.85rem; color: #999; margin-top: 0.5rem;">Diploma Arts, 7 Years Experience</p>
+                </div>
+                 <div class="faculty-card">
+                    <div class="faculty-avatar"><i class="fas fa-palette"></i></div>
+                    <h3>Mr. Samuel Amoah</h3>
+                    <p>HOD Arts Department</p>
+                    <p style="font-size: 0.85rem; color: #999; margin-top: 0.5rem;">Diploma Arts, 7 Years Experience</p>
+                </div>
+                 <div class="faculty-card">
+                    <div class="faculty-avatar"><i class="fas fa-palette"></i></div>
+                    <h3>Mr. Samuel Amoah</h3>
+                    <p>HOD Arts Department</p>
+                    <p style="font-size: 0.85rem; color: #999; margin-top: 0.5rem;">Diploma Arts, 7 Years Experience</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-chart-line" style="color: var(--accent-orange); margin-right: 0.5rem;"></i>Academic Calendar & Key Dates</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h4>First Term</h4>
+                    <p>School reopens • Orientation • Mid-term assessments • Final exams</p>
+                    <p style="font-size: 0.9rem; color: #999; margin-top: 0.5rem;">September - December</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Second Term</h4>
+                    <p>Enhanced academics • Project work • Mid-term break • Examinations</p>
+                    <p style="font-size: 0.9rem; color: #999; margin-top: 0.5rem;">January - March</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Third Term</h4>
+                    <p>BECE preparation (JHS 3) • Final assessments • Graduation</p>
+                    <p style="font-size: 0.9rem; color: #999; margin-top: 0.5rem;">April - June</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ADMISSION PAGE ==================== -->
+    <section id="admission" class="page-section">
+        <div class="hero-banner" style="background-image: url(IMG-20251106-WA0011.jpg);background-size: cover;background-position: center;">
+            <div class="hero-content">
+                <h1>Join Our Community</h1>
+                <p class="subtitle">Begin Your Journey to Excellence</p>
+                <p class="tagline">Simple Process • Quality Education • Bright Future</p>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card featured">
+                <h2><i class="fas fa-list-check" style="color: var(--accent-orange); margin-right: 0.5rem;"></i>Admission Requirements</h2>
+                <h4 style="margin-top: 1.5rem; color: var(--primary-blue);">Required Documents:</h4>
+                <div style="background: #f9f9f9; padding: 1rem; border-radius: 6px; margin-bottom: 1rem;">
+                    <ol style="margin-left: 1.5rem;">
+                        <li><strong>Entrance Examination:</strong> Readiness assessment in Core Mathematics and English (or equivalent transcript)</li>
+                        <li><strong>Primary School Records:</strong> Transcript/cumulative record from Basic 6 (or final primary leaving school report)</li>
+                        <li><strong>Medical Report:</strong> Health clearance from a certified healthcare facility (vaccination record)</li>
+                        <li><strong>Birth Certificate:</strong> Copy of authentic birth certificate or national ID</li>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-info-circle" style="color: var(--primary-blue); margin-right: 0.5rem;"></i>Admission Guidelines</h2>
+                <ul style="margin-bottom: 1rem;">
+                    <li><strong>Entry Level:</strong> Basic 7 (JHS 1), Basic 8 (JHS 2), Basic 9 (JHS 3)</li>
+                    <li><strong>Age Requirement:</strong> Minimum 12 years old for JHS 1</li>
+                    <li><strong>Capacity:</strong> Limited spaces - early application recommended</li>
+                    <li><strong>Selection:</strong> Merit-based on entrance exam & records</li>
+                </ul>
+                <p style="background: #fff3cd; padding: 1rem; border-radius: 6px; font-size: 0.95rem; border-left: 3px solid var(--accent-orange);">
+                    <strong>📌 Important:</strong> Application deadlines are typically in July/August for September intake. We recommend contacting our admission office for current deadlines.
+                </p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-edit" style="color: var(--accent-orange); margin-right: 0.5rem;"></i>Admission Application Form</h2>
+            <p style="color: #666; margin-bottom: 1.5rem;">Complete this form to begin your application process. Our admission team will contact you within 5 business days.</p>
+            
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i> Application submitted successfully! We'll contact you soon with next steps.
+            </div>
+
+            <form onsubmit="handleAdmissionForm(event)">
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Student's Full Name </label>
+                        <input type="text" placeholder="Enter student's full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Date of Birth </label>
+                        <input type="date" required>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Target Class Level </label>
+                        <select required>
+                            <option value="">-- Select Class Level --</option>
+                            <option value="JHS1">Basic 7 (JHS 1)</option>
+                            <option value="JHS2">Basic 8 (JHS 2)</option>
+                            <option value="JHS3">Basic 9 (JHS 3)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender </label>
+                        <select required>
+                            <option value="">-- Select Gender --</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 2rem; color: var(--primary-blue);">Parent / Guardian Information</h3>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Parent/Guardian Full Name </label>
+                        <input type="text" placeholder="Full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Relationship </label>
+                        <select required>
+                            <option value="">-- Select --</option>
+                            <option value="Father">Father</option>
+                            <option value="Mother">Mother</option>
+                            <option value="Guardian">Guardian</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Phone Number </label>
+                        <input type="tel" placeholder="Enter contact number" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="Enter email address">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Residential Address</label>
+                    <input type="text" placeholder="Enter full address">
+                </div>
+
+                <div class="form-group">
+                    <label>Previous School Name *</label>
+                    <input type="text" placeholder="Name of school last attended" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Additional Information / Special Needs</label>
+                    <textarea placeholder="Any additional information we should know..."></textarea>
+                </div>
+
+                <button type="submit" class="btn">
+                    <i class="fas fa-check-circle"></i> Submit Application
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- ==================== GALLERY PAGE ==================== -->
+    <section id="gallery" class="page-section">
+        <div class="hero-banner">
+            <div class="hero-content">
+                <h1>School Gallery</h1>
+                <p class="subtitle">Moments from Republic Road Schools</p>
+                <p class="tagline">Celebrating Excellence in Action</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-images" style="color: var(--accent-orange); margin-right: 0.5rem;"></i>Gallery & Highlights</h2>
+            <p style="color: #666;">Explore moments of academic excellence, student achievements, and extracurricular activities at Republic Road Schools.</p>
+        </div>
+
+        <div class="gallery-grid">
+            <div class="gallery-card">
+                <div class="gallery-card-content">
+                    <img src="IMG-20251106-WA0009.jpg" style="width: 100%; height: 250px;">
+                    <span>Science Fair</span>
+                </div>
+            </div>
+            <div class="gallery-card">
+                <div class="gallery-card-content">
+                <img src="IMG-20251106-WA0007.jpg" style="width: 100%; height: 250px;">
+                    <span>Laboratory Work</span>
+                </div>
+            </div>
+            <div class="gallery-card">
+                <div class="gallery-card-content">
+                    <img src="IMG-20251106-WA0006.jpg" style="width: 100%; height: 250px; ">
+                    <span>Student Assembly</span>
+                </div>
+            </div>
+            <div class="gallery-card">
+                <div class="gallery-card-content">
+                    <img src="IMG-20251106-WA0009.jpg" style="width: 100%; height: 250px;">
+                    <span>Cultural Programs</span>
+                </div>
+            </div>
+            <div class="gallery-card">
+                <div class="gallery-card-content">
+                    <img src="IMG-20251106-WA0010.jpg" style="width: 100%; height: 250px;">
+                    <span>Sports & Athletics</span>
+                </div>
+            </div>
+            <div class="gallery-card">
+                <div class="gallery-card-content">
+                    <img src="IMG-20251106-WA0011.jpg" style="width: 100%;height: 250px;">
+                    <span>Academic Events</span>
+                </div>
+            </div>
+            <div class="gallery-card">
+                <div class="gallery-card-content">
+                    <img src="" alt="">
+                    <span>Computer Lab</span>
+                </div>
+            </div>
+            <div class="gallery-card">
+                <div class="gallery-card-content">
+                   <img src="" alt="">
+                    <span>Graduations</span>
+                </div>
+            </div>
+            <div class="gallery-card">
+                <div class="gallery-card-content">
+                    <img src="" alt="">
+                    <span>Community Service</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 2rem;">
+            <h2 style="display: block;">Upload Your Moments</h2>
+            <p>If you're a student or parent with photos to share, please send them to our email:<strong>gallery@republicroadschools.edu.gh</strong></p>
+        </div>
+    </section>
+
+    <!-- ==================== NEWS PAGE ==================== -->
+    <section id="news" class="page-section">
+        <div class="hero-banner">
+            <div class="hero-content">
+                <h1>Latest News & Updates</h1>
+                <p class="subtitle">Stay Informed About School Activities</p>
+                <p class="tagline">Achievements • Events • Announcements</p>
+            </div>
+        </div>
+
+        <div class="tabs" style="margin-bottom: 2rem;">
+            <button class="tab-btn active" onclick="switchTab(event, 'recent-news')">
+                <i class="fas fa-newspaper"></i> Recent News
+            </button>
+            <button class="tab-btn" onclick="switchTab(event, 'upcoming-events')">
+                <i class="fas fa-calendar"></i> Upcoming Events
+            </button>
+            <button class="tab-btn" onclick="switchTab(event, 'announcements')">
+                <i class="fas fa-megaphone"></i> Announcements
+            </button>
+        </div>
+
+        <div id="recent-news" class="tab-content active">
+            <div class="grid-2">
+                <div class="card">
+                    <h3 style="color: var(--accent-orange);">🏆 BECE Results - Outstanding Performance</h3>
+                    <p style="font-size: 0.85rem; color: #999;">Posted on September 4, 2024</p>
+                    <p>Republic Road Schools JHS 3 students achieved an impressive 80% pass rate in the 2024 BECE examinations! Our students demonstrated exceptional performance in Mathematics and Science, with about 20 students obtaining grade 1 in Mathematics.</p>
+    
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--accent-orange);">🔬 Science Fair Winners</h3>
+                    <p style="font-size: 0.85rem; color: #999;">Posted on August 28, 2024</p>
+                    <p>Congratulations to our robotics team for winning the Tema Community Science Fair! Their innovative water purification project impressed judges from across the region. The team receives a full scholarship for the Science Summer Camp.</p>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--accent-orange);">⚽ Sports Day Success</h3>
+                    <p style="font-size: 0.85rem; color: #999;">Posted on August 15, 2024</p>
+                    <p>Our athletics team won 8 medals at the Tema Inter-School Sports Championships. Our girls' relay team set a new school record! Special thanks to our Physical Education department for their exceptional coaching.</p>
+                    
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--accent-orange);">📚 New Library Expansion</h3>
+                    <p style="font-size: 0.85rem; color: #999;">Posted on August 1, 2024</p>
+                    <p>Our school library has been expanded with 500 new books and digital resources. The new Digital Learning Hub features 20 computers with high-speed internet, perfect for research and online learning activities.</p>
+                    
+                </div>
+            </div>
+        </div>
+
+        <div id="upcoming-events" class="tab-content">
+            <div class="card featured" style="margin-bottom: 1.5rem;">
+                <h3 style="color: var(--accent-orange); margin-top: 0;">🗓️ Upcoming Events</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h4>Cultural & Sports Day</h4>
+                        <p>Students showcase talents, athletics, and cultural performances</p>
+                        <p style="font-size: 0.9rem; color: #999; margin-top: 0.5rem;">📅 September 21, 2024</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Inter-Class Competition</h4>
+                        <p>Academic quiz, debates, and team sports competitions</p>
+                        <p style="font-size: 0.9rem; color: #999; margin-top: 0.5rem;">📅 October 5, 2024</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Science Week Celebrations</h4>
+                        <p>Demonstrations, experiments, and STEM showcases</p>
+                        <p style="font-size: 0.9rem; color: #999; margin-top: 0.5rem;">📅 October 14-18, 2024</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Founder's Day Celebration</h4>
+                        <p>Commemoration of school's founding with awards ceremony</p>
+                        <p style="font-size: 0.9rem; color: #999; margin-top: 0.5rem;">📅 November 8, 2024</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Year-End Graduation</h4>
+                        <p>Formal graduation and farewell ceremony for JHS 3</p>
+                        <p style="font-size: 0.9rem; color: #999; margin-top: 0.5rem;">📅 June 15, 2025</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="announcements" class="tab-content">
+            <div class="grid-2">
+                <div class="card accent">
+                    <h3 style="color: var(--primary-blue); margin-top: 0;">📣 School Closure Notice</h3>
+                    <p style="font-size: 0.85rem; color: #999;">Announcement • September 3, 2024</p>
+                    <p>All classes are suspended on September 21 for the Annual Sports & Cultural Day. Normal classes resume on September 22, 2024.</p>
+                </div>
+                <div class="card accent">
+                    <h3 style="color: var(--primary-blue); margin-top: 0;">💻 ICT Lab Upgrade</h3>
+                    <p style="font-size: 0.85rem; color: #999;">Announcement • August 25, 2024</p>
+                    <p>The computer laboratory has been upgraded with new machines and software. Lab access is now available during lunch breaks and after school hours.</p>
+                </div>
+                <div class="card accent">
+                    <h3 style="color: var(--primary-blue); margin-top: 0;">🎓 2026/27 Intake Forms</h3>
+                    <p style="font-size: 0.85rem; color: #999;">Announcement • August 20, 2024</p>
+                    <p>Admission forms for the 2026/27 academic year are now available. Last date for applications is August 30, 2026. Early submission is advised.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card featured" style="margin-top: 2rem;">
+            <h2><i class="fas fa-envelope" style="color: var(--accent-orange); margin-right: 0.5rem;"></i>Subscribe to Our Newsletter</h2>
+            <p style="color: #666; margin-bottom: 1.5rem;">Get the latest news, updates, and announcements directly to your inbox. Subscribe with your email today.</p>
+            <form onsubmit="handleNewsletterSubscription(event)" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <input type="email" placeholder="Enter your email address" required style="flex: 1; min-width: 250px; padding: 0.85rem; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                <button type="submit" class="btn">
+                    <i class="fas fa-paper-plane"></i> Subscribe
+                </button>
+            </form>
+            <p style="font-size: 0.85rem; color: #999; margin-top: 0.5rem;">We respect your privacy. Unsubscribe anytime.</p>
+        </div>
+    </section>
+
+    <!-- ==================== CONTACT PAGE ==================== -->
+    <section id="contact" class="page-section">
+        <div class="hero-banner">
+            <div class="hero-content">
+                <h1>Get in Touch</h1>
+                <p class="subtitle">We'd Love to Hear From You</p>
+                <p class="tagline">Questions? Feedback? Let's Connect!</p>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card featured">
+                <h2><i class="fas fa-paper-plane" style="color: var(--accent-orange); margin-right: 0.5rem;"></i>Send Us a Message</h2>
+                <p style="color: #666; margin-bottom: 1.5rem;">Have questions about admissions, academics, or our school? Fill out the form below and our team will get back to you within 2 business days.</p>
+                
+                <div class="success-message" id="contactSuccessMessage">
+                    <i class="fas fa-check-circle"></i> Message sent successfully! We'll contact you soon.
+                </div>
+
+                <form onsubmit="handleContactForm(event)">
+                    <div class="form-group">
+                        <label>Your Full Name </label>
+                        <input type="text" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address </label>
+                        <input type="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" placeholder="Enter your phone number">
+                    </div>
+                    <div class="form-group">
+                        <label>Subject </label>
+                        <select required>
+                            <option value="">-- Select Subject --</option>
+                            <option value="Admission">Admission Inquiry</option>
+                            <option value="Academic">Academic Matters</option>
+                            <option value="Facilities">Facilities & Amenities</option>
+                            <option value="Feedback">Feedback / Complaint</option>
+                            <option value="General">General Inquiry</option>
+                            <option value="Supprt">Support & Donaton</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Message </label>
+                        <textarea placeholder="Write your message or inquiry here..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn">
+                        <i class="fas fa-send"></i> Send Message
+                    </button>
+                </form>
+            </div>
+
+            <div>
+                <div class="card">
+                    <h2><i class="fas fa-map-marker-alt" style="color: var(--accent-orange); margin-right: 0.5rem;"></i>Contact Information</h2>
+                    <div style="margin: 1.5rem 0;">
+                        <p style="font-weight: 600; color: var(--primary-blue); margin-bottom: 0.3rem;">📍 School Address</p>
+                        <p>Republic Road Schools (JHS Department)<br>
+                        Community 4, Tema<br>
+                        Greater Accra Region, Ghana <br>
+                        P.O.BOX C7
+                    </p>
+                    </div>
+                    <div style="margin: 1.5rem 0; padding-top: 1.5rem; border-top: 1px solid #e0e0e0;">
+                        <p style="font-weight: 600; color: var(--primary-blue); margin-bottom: 0.3rem;">📞 Phone</p>
+                        <p><a href="tel:+233303200000" style="color: var(--primary-blue); text-decoration: none;">+233 (0) 30 320 0000</a></p>
+                        <p><a href="tel:+233501234567" style="color: var(--primary-blue); text-decoration: none;">+233 (0) 50 123 4567</a></p>
+                    </div>
+                    <div style="margin: 1.5rem 0; padding-top: 1.5rem; border-top: 1px solid #e0e0e0;">
+                        <p style="font-weight: 600; color: var(--primary-blue); margin-bottom: 0.3rem;">✉️ Email</p>
+                        <p><a href="mailto:info@republicroadschools.edu.gh" style="color: var(--primary-blue); text-decoration: none;">info@republicroadschools.edu.gh</a></p>
+                        <p><a href="mailto:admission@republicroadschools.edu.gh" style="color: var(--primary-blue); text-decoration: none;">admission@republicroadschools.edu.gh</a></p>
+                    </div>
+                    <div style="margin: 1.5rem 0; padding-top: 1.5rem; border-top: 1px solid #e0e0e0;">
+                        <p style="font-weight: 600; color: var(--primary-blue); margin-bottom: 0.3rem;">🕐 Office Hours</p>
+                        <p>Monday – Friday: 7:30 AM – 4:00 PM<br>
+                        Saturday: Closed<br>
+                        Sunday: Closed</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fas fa-location-dot" style="color: var(--accent-orange); margin-right: 0.5rem;"></i>Our Location</h2>
+                    <div id="map"></div>
+                    <p style="font-size: 0.85rem; color: #999; margin-top: 1rem; text-align: center;">📍 Community 4, Tema, Ghana</p>
+                </div>
+
+                <div class="card accent">
+                    <h2><i class="fas fa-share-alt" style="color: var(--primary-blue); margin-right: 0.5rem;"></i>Follow Us</h2>
+                    <p style="color: #666; margin-bottom: 1rem;">Connect with us on social media for updates and announcements.</p>
+                    <div class="social-icons" style="color: var(--text-dark);">
+                        <a href="#" title="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-map-pin"></i> Location</h3>
+                <p>Republic Road Schools</p>
+                <p>Community 4, Tema</p>
+                <p>Greater Accra Region, Ghana</p>
+            </div>
+            <div class="footer-section">
+                <h3><i class="fas fa-phone"></i> Contact</h3>
+                <p>Email: <a href="mailto:irepublicroadjhs.info@gmail.com">republicroadjhs.info@gmail.com</a></p>
+                <p>Phone: <a href="tel:+233303200000">+233 (0) 30 320 0000</a></p>
+                <p>Hours: Mon-Fri 7:30 AM - 3:00 PM</p>
+            </div>
+            <div class="footer-section">
+                <h3><i class="fas fa-link"></i> Quick Links</h3>
+                <ul>
+                    <li><a onclick="showPage('home')">Home</a></li>
+                    <li><a onclick="showPage('about')">About</a></li>
+                    <li><a onclick="showPage('academics')">Academics</a></li>
+                    <li><a onclick="showPage('admission')">Admission</a></li>
+                     <li><a onclick="showPage('news')">News</a></li>
+                    <li><a onclick="showPage('contact')">Contact</a></li>
+                   
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3><i class="fas fa-share-alt"></i> Follow Us</h3>
+                <div class="social-icons">
+                    <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                </div>
+                <p style="margin-top: 1rem; font-size: 0.9rem;">Stay updated with school news and announcements</p>
+            </div>
+        </div>
+        <div class="copyright">
+         <p>&copy; 2026 Republic Road Schools - Community 4, Tema. All Rights Reserved. | <a href="#" style="color: inherit; text-decoration: none;">Privacy Policy</a> | <a href="#" style="color: inherit; text-decoration: none;">Terms of Service</a></p>
+
+<p style="margin-top: 12px; font-size: 0.9rem; opacity: 0.85;">
+    Website Designed & Developed by 
+    <strong>Bryden Tech Solutions</strong>
+</p>         
+        </div>
+    </footer>
+
+
+    <!-- ==================== THANK YOU POPUP ==================== -->
+    <div class="thank-you-section" id="thankYouSection" aria-hidden="true">
+        <div class="thank-you-box" role="dialog" aria-modal="true" aria-labelledby="thankYouTitle">
+            <div class="thank-you-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2 id="thankYouTitle">Thank You!</h2>
+            <p id="thankYouMessage">Your message has been received successfully.</p>
+            <button type="button" class="btn" onclick="closeThankYou()">
+                <i class="fas fa-home"></i> Back to Website
+            </button>
+        </div>
+    </div>
+
+    <!-- LEAFLET MAP SCRIPT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+     <!-- MAIN JAVASCRIPT -->
+    <script>
+        // ==================== NAVIGATION ==================== 
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page-section');
+            pages.forEach(page => page.classList.remove('active'));
+
+            const selectedPage = document.getElementById(pageId);
+            if (selectedPage) {
+                selectedPage.classList.add('active');
+            }
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+            
+            event.target.closest('a').classList.add('active');
+            
+            const mobileNav = document.getElementById('mainNav');
+            if (mobileNav.classList.contains('active')) {
+                mobileNav.classList.remove('active');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const nav = document.getElementById('mainNav');
+            nav.classList.toggle('active');
+        }
+
+        // ==================== TABS ==================== 
+        function switchTab(event, tabName) {
+            event.preventDefault();
+            
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(tab => tab.classList.remove('active'));
+            
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns.forEach(btn => btn.classList.remove('active'));
+            
+            const selectedTab = document.getElementById(tabName);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+                event.target.closest('button').classList.add('active');
+            }
+        }
+
+        // ==================== THANK YOU PAGE ====================
+        function showThankYou(message = 'Your message has been received successfully.') {
+            const thankYouSection = document.getElementById('thankYouSection');
+            const thankYouMessage = document.getElementById('thankYouMessage');
+
+            if (!thankYouSection || !thankYouMessage) {
+                console.error('Thank-you popup HTML was not found.');
+                return;
+            }
+
+            thankYouMessage.textContent = message;
+            thankYouSection.classList.add('active');
+            thankYouSection.setAttribute('aria-hidden', 'false');
+        }
+
+        function closeThankYou() {
+            const thankYouSection = document.getElementById('thankYouSection');
+
+            if (thankYouSection) {
+                thankYouSection.classList.remove('active');
+                thankYouSection.setAttribute('aria-hidden', 'true');
+            }
+        }
+
+        // ==================== FORM HANDLERS ====================
+        function submitFormAndShowThankYou(event, successMessage, fallbackMessage) {
+            event.preventDefault();
+
+            const form = event.target;
+            const formData = new FormData(form);
+
+            fetch('https://formsubmit.co/republicroadjhs.info@gmail.com', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Form submission failed');
+                }
+
+                form.reset();
+                showThankYou(successMessage);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+
+                // The popup still appears if FormSubmit has a temporary network/CORS problem.
+                form.reset();
+                showThankYou(fallbackMessage);
+            });
+        }
+
+        function handleAdmissionForm(event) {
+            submitFormAndShowThankYou(
+                event,
+                'Your admission application has been submitted successfully! We will contact you within 5 business days.',
+                'Your application has been submitted. We will contact you soon!'
+            );
+        }
+
+        function handleContactForm(event) {
+            submitFormAndShowThankYou(
+                event,
+                'Your message has been sent successfully! We will respond within 24 hours.',
+                'Your message has been sent. We will respond soon!'
+            );
+        }
+
+        function handleNewsletterSubscription(event) {
+            submitFormAndShowThankYou(
+                event,
+                'Thank you for subscribing to our newsletter! You will receive updates about school news and events.',
+                'Thank you for subscribing! Check your email for updates.'
+            );
+        }
+
+        // ==================== MAP INITIALIZATION ==================== 
+        function initializeMap() {
+            const lat = 5.6737;
+            const lng = -0.0107;
+            
+            const map = L.map('map').setView([lat, lng], 16);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(map);
+            
+            const marker = L.marker([lat, lng], {
+                icon: L.icon({
+                    iconUrl: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzAwMzNjYyIgZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyYzAgNC40MSAzLjQ1IDguMDMgNy43NiA4LjRsLS43NiAwdi01aDAuMDF2LTJoMnYyaDAuMDF2NWgtMi43NWMwIDAuNDEgMC40IDEgMSAxaDMuNzV2LWMwIDAgMCAwIDAgMGgwdjIuODhjMC41NjQgMC4zMSAxLjA3IDAuNjk1IDEuNSAxLjE4djFDOSAyMS4zMzYgOSAyMiA5IDIyaDB6TTEyIDRjLTQuNDEgMC04IDMuNTktOCA4czMuNTkgOCA4IDggOC0zLjU5IDgtOC0zLjU5LTgtOC04em0wIDEzYy0yLjc2IDAtNS0yLjI0LTUtNXMyLjI0LTUgNS01IDUgMi4yNCA1IDUtMi4yNCA1LTUgNXoiLz48L3N2Zz4=',
+                    iconSize: [35, 45],
+                    iconAnchor: [17.5, 45],
+                    popupAnchor: [0, -45]
+                })
+            }).addTo(map);
+            
+            marker.bindPopup(`
+                <div style="text-align: center; font-weight: bold;">
+                    <p>Republic Road Schools</p>
+                    <p style="font-size: 0.85rem;">Community 4, Tema</p>
+                </div>
+            `).openPopup();
+        }
+
+        // Initialize map when contact page is loaded
+        let mapInitialized = false;
+        const originalShowPage = window.showPage;
+        window.showPage = function(pageId) {
+            originalShowPage.call(this, arguments[0]);
+            if (pageId === 'contact' && !mapInitialized && document.getElementById('map')) {
+                setTimeout(() => {
+                    initializeMap();
+                    mapInitialized = true;
+                }, 500);
+            }
+        };
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('mainNav');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            if (!event.target.closest('nav') && !event.target.closest('.mobile-menu-toggle')) {
+                nav.classList.remove('active');
+            }
+        });
+
+        // Close thank you popup when clicking outside
+        const thankYouPopup = document.getElementById('thankYouSection');
+        if (thankYouPopup) {
+            thankYouPopup.addEventListener('click', function(event) {
+                if (event.target === this) {
+                    closeThankYou();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
